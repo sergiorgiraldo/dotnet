@@ -10,32 +10,32 @@ namespace Permutations
     {
         public List<string> Do(List<string> letters)
         {
-            var result = new List<string>();
-            for (int i = 0; i < letters.Count; i++)
-            {
-                result.Add(letters[i]);
-                var permutations = InnerDo(letters[i], i, letters);
-                foreach (var item in permutations)
-                {
-                    if (result.IndexOf(item) == -1)
-                    {
-                        result.Add(item);
-                    }
-                }
-            }
-            return result;
+            var str = letters.Aggregate((i, j) => i + j);
+            List<string> output = new List<string>();
+            // Working buffer to build new sub-strings
+            char[] buffer = new char[str.Length];
+
+            DoRecurse(str.ToCharArray(), 0, buffer, 0, output);
+
+            return output;
         }
 
-        private List<string> InnerDo(string radix, int curr, List<string> letters)
+        public void DoRecurse(char[] input, int inputPos, char[] buffer, int bufferPos, List<string> output)
         {
-            var result = new List<string>();
-
-            for (int i = curr + 1; i < letters.Count; i++)
+            if (inputPos >= input.Length)
             {
-                result.Add(radix + letters[i]);
-                result.AddRange(InnerDo(radix + letters[i], i + 1, letters));
+                // Add only non-empty strings
+                if (bufferPos > 0)
+                    output.Add(new string(buffer, 0, bufferPos));
+
+                return;
             }
-            return result;
+
+            // Recurse 2 times - one time without adding current input char, one time with.
+            DoRecurse(input, inputPos + 1, buffer, bufferPos, output);
+
+            buffer[bufferPos] = input[inputPos];
+            DoRecurse(input, inputPos + 1, buffer, bufferPos + 1, output);
         }
     }
 }

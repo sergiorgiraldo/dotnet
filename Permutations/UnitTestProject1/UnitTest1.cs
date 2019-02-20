@@ -61,6 +61,7 @@ namespace UnitTestProject1
             Assert.IsTrue(result.IndexOf("bc") != -1);
             Assert.IsTrue(result.IndexOf("abc") != -1);
         }
+
         [TestMethod]
         public void TestMethod7()
         {
