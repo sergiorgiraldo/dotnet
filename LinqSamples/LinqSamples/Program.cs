@@ -29,6 +29,11 @@ namespace LinqSamples
                         .Where(e => e.Age > 28)
                         .Select(e => e.Name);
 
+            var total = EmpList
+                        .Sum(e => e.Age);
+
+            Console.WriteLine(total);
+
             EmpList.Add(new Employee { Id = 1, Name = "Jeb", Age = 29 });
 
             foreach (var item in lst)
