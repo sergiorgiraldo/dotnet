@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JosephusProblem
 {
@@ -10,35 +8,45 @@ namespace JosephusProblem
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Josephus(5, 2));
+            Assert(Josephus(5, 1), 4);
+            Assert(Josephus(5, 2), 2);
+            Assert(Josephus(5, 3), 3);
+            Assert(Josephus(10, 3), 3);
+            Assert(Josephus(7, 2), 6);
             Console.WriteLine("Done");
             Console.ReadLine();
         }
 
-        static int Josephus(int noOfCandidates, int offset)
+        static void Assert(int a, int b)
+        {
+            Console.WriteLine(a + " - " + b + "->" + (a == b?"TRUE":"FALSE"));
+        }
+
+        static int Josephus(int noOfCandidates, int skip)
         {
             Dictionary<int, bool> candidates = new Dictionary<int, bool>();
             for (int i = 0; i < noOfCandidates; i++)
             {
                 candidates.Add(i, true);          
             }
-
+            var candidateSpot = 0;
             while (candidates.Count(c => c.Value) > 1)
             {
                 var currentList = candidates.Where(c => c.Value).ToList();
                 var index = 0;
-                var found = false;
-                while (!found)
+                while (true)
                 {
-                    for (int i = 0; i < currentList.Count; i++)
+                    index += 1;
+                    if (index == skip)
                     {
-                        index += 1;
-                        if (index == offset)
-                        {
-                            candidates[currentList[i].Key] = false;
-                            found = true;
-                            break;
-                        }
+                        candidates[currentList[candidateSpot].Key] = false;
+                        if (candidateSpot == currentList.Count - 1) candidateSpot = 0;
+                        break;
+                    }
+                    else
+                    {
+                        candidateSpot += 1;
+                        if (candidateSpot == currentList.Count) candidateSpot = 0;
                     }
                 }
             }
