@@ -13,12 +13,10 @@ namespace DetectingCycleInLinkedList
         public class Node
         {
             public int value;
-            public string key;
             public Node NextNode;
 
             public Node(int value)
             {
-                key = Guid.NewGuid().ToString();
                 this.value = value;
             }
         }
@@ -30,17 +28,17 @@ namespace DetectingCycleInLinkedList
 
         public Boolean hasLoop() //brute force
         {
-            List<string> lstKeys = new List<string>
+            List<int> lstKeys = new List<int>
             {
-                Head.key
+                Head.GetHashCode()
             };
 
-            Node tempNode = Head.NextNode;
-            while (tempNode != null)
+            Node currentNode = Head.NextNode;
+            while (currentNode != null)
             {
-                if (lstKeys.IndexOf(tempNode.key) != -1) return true;
-                lstKeys.Add(tempNode.key);
-                tempNode = tempNode.NextNode;
+                if (lstKeys.IndexOf(currentNode.GetHashCode()) != -1) return true;
+                lstKeys.Add(currentNode.GetHashCode());
+                currentNode = currentNode.NextNode;
             }
             return false;
         }
@@ -88,7 +86,7 @@ namespace DetectingCycleInLinkedList
             node4.NextNode = node5;
             node5.NextNode = node6;
             node6.NextNode = node7;
-            node7.NextNode = node4;
+            node7.NextNode = null;
 
             Console.WriteLine(ll.hasLoop());
             Console.Read();
