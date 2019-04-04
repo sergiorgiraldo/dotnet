@@ -23,6 +23,12 @@ namespace heapSort
     }
  public class sampleHeapSort
     {
+        public static void Swap(int[] heap, int from, int to){
+            int temp = heap[from];
+            heap[from] = heap[to];
+            heap[to] = temp;
+        }
+
         public static int[] HeapSort(int[] heap)
         {
             int heapSize = heap.Length;
@@ -33,10 +39,7 @@ namespace heapSort
 
             for (int i = heap.Length - 1; i > 0; i--)
             {
-                int temp = heap[i];
-                heap[i] = heap[0];
-                heap[0] = temp;
-
+                Swap(heap, i, 0);    
                 heapSize--;
                 maxHeapify(heap, heapSize, 0);
             }
@@ -47,13 +50,10 @@ namespace heapSort
         {
             int left = (index + 1) * 2 - 1;
             int right = (index + 1) * 2;
-            int largest = 0;
+            int largest = index;
             if (left < heapSize && input[left] > input[index])
             {
                 largest = left;
-            }
-            else {
-                largest = index;
             }
 
             if (right < heapSize && input[right] > input[largest])
@@ -63,9 +63,7 @@ namespace heapSort
 
             if (largest != index)
             {
-                int temp = input[index];
-                input[index] = input[largest];
-                input[largest] = temp;
+                Swap(input, index, largest);
 
                 maxHeapify(input, heapSize, largest);
             }
