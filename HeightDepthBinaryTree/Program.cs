@@ -3,83 +3,101 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HeightDepthBinaryTree
 {
-	public class BinaryTreeNode
-	{
-		public BinaryTreeNode Left { get; set; }
-		public BinaryTreeNode Right { get; set; }
-		public int Value { get; set; }
+    public class BinaryTree
+    {
 
-	}
+        public static int GetMaxTreeDepth(BinaryTreeNode root)
+        {
+            if (root == null)
+            {
+                throw new ArgumentNullException();
+            }
+            int depth = 0;
+            return GetMaxHelper(root, depth);
+        }
 
-	  [TestClass]
-		public class MaxTreeDepth
-		{
-			//     0 
-			//   1    2
-			//  3
-			[TestMethod]
-			public void GetMaxTreeDepthTest()
-			{
-				BinaryTreeNode root = new BinaryTreeNode
-				{
-					Value = 0,
-					Left = new BinaryTreeNode {Value = 1},
-					Right = new BinaryTreeNode {Value = 2}
-				};
-				root.Left.Right = new BinaryTreeNode {Value = 3};
+        private static int GetMaxHelper(BinaryTreeNode node, int depth)
+        {
+            if (node == null)
+            {
+                return depth;
+            }
 
-				int result = GetMaxTreeDepth(root);
-				Assert.AreEqual(3,result);
-			}
+            return Math.Max(GetMaxHelper(node.Right, depth + 1), GetMaxHelper(node.Left, depth + 1));
+        }
+    }
 
-			//     0 
+    public class BinaryTreeNode
+    {
+        public BinaryTreeNode Left { get; set; }
+        public BinaryTreeNode Right { get; set; }
+        public int Value { get; set; }
+    }
 
-			[TestMethod]
-			public void GetMaxTreeDepthTestOneNode()
-			{
-				BinaryTreeNode root = new BinaryTreeNode
-				{
-					Value = 0,
-				};
+    [TestClass]
+    public class MaxTreeDepth
+    {
+        //     0 
+        //   1    2
+        //  3
+        [TestMethod]
+        public void GetMaxTreeDepthTest()
+        {
+            BinaryTreeNode root = new BinaryTreeNode
+            {
+                Value = 0,
+                Left = new BinaryTreeNode { Value = 1 },
+                Right = new BinaryTreeNode { Value = 2 }
+            };
+            root.Left.Right = new BinaryTreeNode { Value = 3 };
 
-				int result = GetMaxTreeDepth(root);
-				Assert.AreEqual(1, result);
-			}
+            int result = BinaryTree.GetMaxTreeDepth(root);
+            Assert.AreEqual(3, result);
+        }
 
-			[TestMethod]
-			[ExpectedException(typeof(ArgumentNullException))]
-			public void GetMaxTreeDepthTestNull()
-			{
-				BinaryTreeNode root = null;
-				int result = GetMaxTreeDepth(root);
-			}
+        //     0 
 
-			private int GetMaxTreeDepth(BinaryTreeNode root)
-			{
-				if (root == null)
-				{
-					throw new ArgumentNullException();
-				}
-				int depth = 0;
-				return GetMaxHelper(root, depth);
-			}
+        [TestMethod]
+        public void GetMaxTreeDepthTestOneNode()
+        {
+            BinaryTreeNode root = new BinaryTreeNode
+            {
+                Value = 0,
+            };
 
-			private int GetMaxHelper(BinaryTreeNode root, int depth)
-			{
-				if (root == null)
-				{
-					return depth;
-				}
+            int result = BinaryTree.GetMaxTreeDepth(root);
+            Assert.AreEqual(1, result);
+        }
 
-				return Math.Max( GetMaxHelper(root.Right, depth+1),  GetMaxHelper(root.Left, depth+1));
-			}
-		}
-		
-       class Program
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetMaxTreeDepthTestNull()
+        {
+            BinaryTreeNode root = null;
+            int result = BinaryTree.GetMaxTreeDepth(root);
+        }
+    }
+
+    class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            BinaryTreeNode root = new BinaryTreeNode
+            {
+                Value = 0,
+                Left = new BinaryTreeNode { Value = 1 },
+                Right = new BinaryTreeNode { Value = 2 }
+            };
+            root.Left.Right = new BinaryTreeNode { Value = 3 };
+            root.Left.Left = new BinaryTreeNode { Value = 4 };
+            root.Left.Right.Left = new BinaryTreeNode { Value = 5 };
+            root.Left.Right.Right = new BinaryTreeNode { Value = 6 };
+
+            //          0 
+            //        1   2
+            //      4    3
+            //         5    6
+            Console.WriteLine(BinaryTree.GetMaxTreeDepth(root));
         }
     }
 }
