@@ -6,8 +6,9 @@ namespace insertionSort
     {
         static void Main(string[] args)
         {
-			 int[] arr = new int[10] { 23, 9, 85, 12, 99, 34, 60, 15, 100, 1 };
-			 int n = 10, i, j, val, flag;
+			 //int[] arr = new int[10] { 23, 9, 85, 12, 99, 34, 60, 15, 100, 1 };
+			 int[] arr = new int[5] { 7,10,4,12,15};
+			 int n = arr.Length, i, j, val, flag;
 			 Console.WriteLine("Insertion Sort");
 			 Console.Write("Initial array is: ");   
 			 for (i = 0; i < n; i++) {
