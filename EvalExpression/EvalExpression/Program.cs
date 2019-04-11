@@ -9,6 +9,21 @@ namespace EvalExpression
         {
             var exp = "4 - 3 * 12 + 300"; //268
             var result = calc(exp);
+            Console.WriteLine(result);
+
+            exp = "7 * 7 + 100 - 12"; //137
+            result = calc(exp);
+            Console.WriteLine(result);
+
+            exp = "10 - 4"; //6
+            result = calc(exp);
+            Console.WriteLine(result);
+
+            exp = "8 / 4 + 1"; //3
+            result = calc(exp);
+            Console.WriteLine(result);
+
+            Console.ReadLine();
         }
 
         static int calc(string exp)
@@ -47,20 +62,33 @@ namespace EvalExpression
                     operators.Push(tokens[i]);
                 }
             }
-            var result = 0;
-            while (operators.Count > 0)
+            Stack<int> numbersRev = new Stack<int>();
+            Stack<string> operatorsRev = new Stack<string>();
+
+            //now revert them
+            while (numbers.Count != 0)
             {
-                var nFinal1 = numbers.Pop();
-                var nFinal2 = numbers.Pop();
-                var finalOperator = operators.Pop();
+                numbersRev.Push(numbers.Pop());
+            }
+            while (operators.Count != 0)
+            {
+                operatorsRev.Push(operators.Pop());
+            }
+
+            var result = 0;
+            while (operatorsRev.Count > 0)
+            {
+                var nFinal1 = numbersRev.Pop();
+                var nFinal2 = numbersRev.Pop();
+                var finalOperator = operatorsRev.Pop();
                 switch (finalOperator)
                 {
-                    case "+": result = (nFinal2 + nFinal1); break;
-                    case "-": result = (nFinal2 - nFinal1); break;
-                    case "*": result = (nFinal2 * nFinal1); break;
-                    case "/": result = (nFinal2 / nFinal1); break;
+                    case "+": result = (nFinal1 + nFinal2); break;
+                    case "-": result = (nFinal1 - nFinal2); break;
+                    case "*": result = (nFinal1 * nFinal2); break;
+                    case "/": result = (nFinal1 / nFinal2); break;
                 }
-                numbers.Push(result);
+                numbersRev.Push(result);
             }
             return result;
         }
