@@ -1,0 +1,62 @@
+﻿@using System.Security.Cryptography
+@model List<MyStuff.Models.Product>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+@if (TempData["Message"] != null)
+{
+    <h3 style="color:navy">@TempData["Message"]</h3>
+
+    TempData["Message"] = null;
+}
+
+
+<h2>Itens disponíveis</h2>
+
+<table class="table">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                    <br /><br />
+                    <b>R$ @Html.DisplayFor(modelItem => item.Price)</b>
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Image1))
+                    {
+                        <a href="@item.Image1" data-lightbox="@item.Id" title="Imagem 1 - @item.Name">
+                            <img src="@item.Image1" alt="Imagem 1 - @item.Name" height="150" width="150"/>
+                        </a>
+                    }
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Image2))
+                    {
+                        <a href="@item.Image2" data-lightbox="@item.Id" title="Imagem 2 - @item.Name">
+                            <img src="@item.Image2" alt="Imagem 2 - @item.Name" height="150" width="150"/>
+                        </a>
+                    }
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Image3))
+                    {
+                        <a href="@item.Image3" data-lightbox="@item.Id" title="Imagem 3 - @item.Name">
+                            <img src="@item.Image3" alt="Imagem 3 - @item.Name" height="150" width="150"/>
+                        </a>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Reserve" asp-route-id="@item.Id" title="Garanta este item para você!">Reservar</a><br />
+                    <a asp-action="Doubt" asp-route-id="@item.Id" title="Fale conosco para saber mais sobre este item">Dúvidas?</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

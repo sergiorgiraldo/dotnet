@@ -1,0 +1,41 @@
+﻿@model MyStuff.Models.Product
+
+@{
+    ViewData["Title"] = "Dúvidas";
+}
+
+<h2>Dúvidas</h2>
+
+<h4>Complete as informações abaixo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Doubt">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Name" />
+            <div class="form-group">
+                <label class="control-label">Seu email</label>
+                <input id="email" name="email" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Seu telefone</label>
+                <input id="phone" name="phone" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Sua dúvida sobre @Model.Name</label>
+                <input id="doubt" name="doubt" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Enviar" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href="/Products/List">Voltar para a lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

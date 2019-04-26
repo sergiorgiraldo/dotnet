@@ -1,0 +1,84 @@
+﻿@model MyStuff.Models.Product
+
+@{
+    ViewData["Title"] = "Reservar";
+}
+
+<h2>Reserva</h2>
+
+<h4>Complete as informações abaixo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Reserve">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group" hidden="true">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden="true">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden="true">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Seu nome</label>
+                <input asp-for="BuyerName" class="form-control" />
+                <span asp-validation-for="BuyerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Seu email</label>
+                <input asp-for="BuyerEmail" class="form-control" />
+                <span asp-validation-for="BuyerEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Seu número de telefone</label>
+                <input asp-for="BuyerPhone" class="form-control" />
+                <span asp-validation-for="BuyerPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden="true">
+                <label asp-for="DateCreation" class="control-label"></label>
+                <input asp-for="DateCreation" class="form-control" />
+                <span asp-validation-for="DateCreation" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden="true">
+                <label asp-for="DateSell" class="control-label"></label>
+                <input asp-for="DateSell" class="form-control" />
+                <span asp-validation-for="DateSell" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden="true">
+                <label asp-for="Image1" class="control-label"></label>
+                <input asp-for="Image1" class="form-control" />
+                <span asp-validation-for="Image1" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden="true">
+                <label asp-for="Image2" class="control-label"></label>
+                <input asp-for="Image2" class="form-control" />
+                <span asp-validation-for="Image2" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden="true">
+                <label asp-for="Image3" class="control-label"></label>
+                <input asp-for="Image3" class="form-control" />
+                <span asp-validation-for="Image3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Reservar" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href="/Products/List">Voltar para a lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
