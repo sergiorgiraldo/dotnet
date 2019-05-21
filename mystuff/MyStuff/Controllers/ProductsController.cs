@@ -31,7 +31,7 @@ namespace MyStuff.Controllers
         [HttpGet]
         public IActionResult List()
         {
-            var products = _context.Products.Where(p => string.IsNullOrEmpty(p.BuyerName)).ToList();
+            var products = _context.Products.Where(p => string.IsNullOrEmpty(p.BuyerName)).OrderBy(p => p.Name.ToLowerInvariant()).ToList();
             return View(products);
         }
 

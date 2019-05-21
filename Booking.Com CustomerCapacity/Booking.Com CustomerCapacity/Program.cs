@@ -36,11 +36,11 @@ namespace Booking.Com_CustomerCapacity
             var set = new SortedList<int, int>();
             foreach (var t in callTimes)
             {
-                var b = t[0];
-                var e = t[1];
+                var beginOfCall = t[0];
+                var endOfCall = t[1];
 
-                if (!set.ContainsKey(b)) set.Add(b, +1); else set[b]++;
-                if (!set.ContainsKey(e)) set.Add(e, -1); else set[e]--;
+                if (!set.ContainsKey(beginOfCall)) set.Add(beginOfCall, +1); else set[beginOfCall]++;
+                if (!set.ContainsKey(endOfCall)) set.Add(endOfCall, -1); else set[endOfCall]--;
             }
             var max = 0;
             var num = 0;
