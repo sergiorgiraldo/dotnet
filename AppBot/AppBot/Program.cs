@@ -43,7 +43,7 @@ namespace AppBot
 
                     for (var page = category.Start; page <= Math.Min(category.NoPages, CUT); page++)
                     {
-                        Console.WriteLine("Page " + page);
+                        Console.WriteLine("Page " + page + " of " + category.NoPages);
                         GetReviews(category, page).Wait();
                         category.PagesRetrieved += 1;
                     }
@@ -167,22 +167,30 @@ namespace AppBot
 
         private static async Task GetReviews(Category category, int page)
         {
-            var handler = new HttpClientHandler
+            try
             {
-                Credentials = new NetworkCredential("YOUR_USERNAME", "YOUR_SECRET")
-            };
+                var handler = new HttpClientHandler
+                {
+                    Credentials = new NetworkCredential("YOUR_USERNAME", "YOUR_SECRET")
+                };
 
-            using (var client = new HttpClient(handler))
+                using (var client = new HttpClient(handler))
+                {
+                    var endpoint = category.Endpoint
+                        .Replace("{0}", page.ToString())
+                        .Replace("{1}", category.InitialDate)
+                        .Replace("{2}", category.FinalDate);
+                    var stringTask = client.GetStringAsync(endpoint);
+
+                    var result = await stringTask;
+                    SaveFile(result, category, page);
+                    Console.WriteLine("\tSaved.");
+                }
+            }
+            catch (Exception e)
             {
-                var endpoint = category.Endpoint
-                    .Replace("{0}", page.ToString())
-                    .Replace("{1}", category.InitialDate)
-                    .Replace("{2}", category.FinalDate); 
-                var stringTask = client.GetStringAsync(endpoint);
-
-                var result = await stringTask;
-                SaveFile(result, category, page);
-                Console.WriteLine("\tSaved.");
+                Console.WriteLine("Error getting page " + page + " from " + category.Which + "::" + e.Message);
+                throw;
             }
         }
 
