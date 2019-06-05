@@ -93,6 +93,8 @@ namespace diceware
             Console.WriteLine("l|len|min: minimal length of each word. default: 3");
             Console.WriteLine("c|clean|accents: remove accents. default: false");
             Console.WriteLine("s|sep|separator: separator. default: -");
+
+            Environment.Exit(0);
         }
     }
 }
