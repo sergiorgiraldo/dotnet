@@ -1,36 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using NDesk.Options;
 
 namespace diceware
 {
     class Program
     {
-        private static int numberOfWords = 5;
-        private static int minLength = 3;
-        private static bool cleanWords = false;
-        private static string separator = "-";
-        private static List<string> words = new List<string>();
+        private static int _numberOfWords = 4;
+        private static int _minLength = 5;
+        private static bool _cleanWords = true;
+        private static string _wordcase = "L";
+        private static string _separator = "-";
+        private static readonly List<string> words = new List<string>();
 
         static void Main(string[] args)
         {
-            var p = new OptionSet () {
+            var p = new OptionSet() {
                 {
                     "h|?|help", v => ShowHelp ()
                 },
                 {
-                    "n|w|words", v => numberOfWords = int.Parse(v)
+                    "n|w|words=", v => _numberOfWords = int.Parse(v)
                 },
                 {
-                    "l|len|min", v => minLength = int.Parse(v)
+                    "l|len|min=", v => _minLength = int.Parse(v)
                 },
                 {
-                    "c|clean|accents", v => cleanWords = bool.Parse(v)
+                    "c|clean|accents=", v => _cleanWords = (v == "Y")
                 },
                 {
-                    "s|sep|separator", v => separator = v
+                    "s|sep|separator=", v => _separator = v
+                },
+                {
+                    "case=", v => _wordcase = v.ToUpperInvariant()
                 }
             };
             p.Parse(args);
@@ -50,20 +56,36 @@ namespace diceware
             for (var i = 0; i <= 2; i++)
             {
                 var password = "";
-                for (var j = 0; j < numberOfWords; j++)
+                for (var j = 0; j < _numberOfWords; j++)
                 {
                     var num = GenerateRandom(0, 7775);
-                    if (words[num].Length < minLength)
+                    if (words[num].Length < _minLength)
                     {
                         j -= 1;
                         continue;
                     }
-                    password += (j > 0 ? separator : "") + words[num];
+
+                    var word = (_cleanWords ? RemoveDiacritics(words[num], true) : words[num]);
+                    switch (_wordcase)
+                    {
+                        case "U":
+                            word = word.ToUpperInvariant();
+                            break;
+                        case "T":
+                            var textInfo = new CultureInfo("pt-br", false).TextInfo;
+                            word = textInfo.ToTitleCase(word); 
+                            break;
+                        default:
+                            word = word.ToLowerInvariant();
+                            break;
+                    }
+                    password += (j > 0 ? _separator : "") + word;
                 }
                 Console.WriteLine("\t" + password);
             }
         }
 
+        //https://web.archive.org/web/20090304194122/http://msdn.microsoft.com:80/en-us/magazine/cc163367.aspx
         public static int GenerateRandom(Int32 minValue, Int32 maxValue)
         {
             RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
@@ -86,13 +108,44 @@ namespace diceware
                 }
             }
         }
+
+        public static IEnumerable<char> RemoveDiacriticsEnum(string src, bool compatNorm, Func<char, char> customFolding)
+        {
+            foreach (char c in src.Normalize(compatNorm ? NormalizationForm.FormKD : NormalizationForm.FormD))
+                switch (CharUnicodeInfo.GetUnicodeCategory(c))
+                {
+                    case UnicodeCategory.NonSpacingMark:
+                    case UnicodeCategory.SpacingCombiningMark:
+                    case UnicodeCategory.EnclosingMark:
+                        //do nothing
+                        break;
+                    default:
+                        yield return customFolding(c);
+                        break;
+                }
+        }
+
+        public static string RemoveDiacritics(string src, bool compatNorm, Func<char, char> customFolding)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in RemoveDiacriticsEnum(src, compatNorm, customFolding))
+                sb.Append(c);
+            return sb.ToString();
+        }
+
+        public static string RemoveDiacritics(string src, bool compatNorm)
+        {
+            return RemoveDiacritics(src, compatNorm, c => c);
+        }
+
         private static void ShowHelp()
         {
             Console.WriteLine("Parameters:");
-            Console.WriteLine("n|w|words: number of words. default: 5");
-            Console.WriteLine("l|len|min: minimal length of each word. default: 3");
-            Console.WriteLine("c|clean|accents: remove accents. default: false");
-            Console.WriteLine("s|sep|separator: separator. default: -");
+            Console.WriteLine("/(n|w|words)={number}: number of words. default: 4");
+            Console.WriteLine("/(l|len|min)={number}: minimal length of each word. default: 5");
+            Console.WriteLine("/(c|clean|accents)={Y|N}: Remove accents. default: Y");
+            Console.WriteLine("/case={U|L|T}: Uppercase, Lowercase, Titlecase each word. default: L (lowercase)");
+            Console.WriteLine("/(s|sep|separator)={character}: separator. default: -");
 
             Environment.Exit(0);
         }
