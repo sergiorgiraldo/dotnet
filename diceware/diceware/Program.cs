@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
@@ -10,10 +11,10 @@ namespace diceware
 {
     class Program
     {
-        private static int _numberOfWords = 4;
+        private static int _numberOfWords = 5;
         private static int _minLength = 5;
         private static bool _cleanWords = true;
-        private static string _wordcase = "L";
+        private static string _wordcase = "T";
         private static string _separator = "-";
         private static readonly List<string> words = new List<string>();
 
@@ -21,7 +22,7 @@ namespace diceware
         {
             var p = new OptionSet() {
                 {
-                    "h|?|help", v => ShowHelp ()
+                    "h|?|help", v => ShowHelp()
                 },
                 {
                     "n|w|words=", v => _numberOfWords = int.Parse(v)
@@ -41,7 +42,7 @@ namespace diceware
             };
             p.Parse(args);
 
-            using (var sr = new StreamReader("lista.txt"))
+            using (var sr = new StreamReader(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lista.txt")))
             {
                 var line = sr.ReadLine();
                 while (line != null)
@@ -140,13 +141,15 @@ namespace diceware
 
         private static void ShowHelp()
         {
+            var currentColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("Parameters:");
-            Console.WriteLine("/(n|w|words)={number}: number of words. default: 4");
-            Console.WriteLine("/(l|len|min)={number}: minimal length of each word. default: 5");
-            Console.WriteLine("/(c|clean|accents)={Y|N}: Remove accents. default: Y");
-            Console.WriteLine("/case={U|L|T}: Uppercase, Lowercase, Titlecase each word. default: L (lowercase)");
-            Console.WriteLine("/(s|sep|separator)={character}: separator. default: -");
-
+            Console.WriteLine("\t/(n|w|words)={number}: number of words. default: 5");
+            Console.WriteLine("\t/(l|len|min)={number}: minimal length of each word. default: 5");
+            Console.WriteLine("\t/(c|clean|accents)={Y|N}: Remove accents. default: Y");
+            Console.WriteLine("\t/case={U|L|T}: Uppercase, Lowercase, Titlecase each word. default: T (titlecase)");
+            Console.WriteLine("\t/(s|sep|separator)={character}: separator. you must enclose in quotes. default: '-'");
+            Console.ForegroundColor = currentColor;
             Environment.Exit(0);
         }
     }
