@@ -14,7 +14,7 @@ namespace diceware
         private static int _minLength = 5;
         private static bool _cleanWords = true;
         private static string _wordcase = "L";
-        private static string _separator = "-";
+        private static string _separator = "*";
         private static readonly List<string> words = new List<string>();
 
         static void Main(string[] args)
@@ -52,7 +52,7 @@ namespace diceware
                 }
             }
 
-            Console.WriteLine("Here are 3 options:");
+            Console.WriteLine("Here are 3 passwords, pick one:");
             for (var i = 0; i <= 2; i++)
             {
                 var password = "";
@@ -83,10 +83,23 @@ namespace diceware
                 }
                 Console.WriteLine("\t" + password);
             }
+            Console.WriteLine("---");
+            Console.WriteLine(ShowOptions());
+
         }
 
-        //https://web.archive.org/web/20090304194122/http://msdn.microsoft.com:80/en-us/magazine/cc163367.aspx
-        public static int GenerateRandom(Int32 minValue, Int32 maxValue)
+        private static string ShowOptions()
+        {
+            var options = "These are ";
+            options += _numberOfWords + " words, with min length of " + _minLength;
+            options += ", formatted as " +
+                       (_wordcase == "L" ? "lowercase" : (_wordcase == "T" ? "titlecase" : "uppercase"));
+            options += ", separated by \\ " + _separator + " \\.";
+            return options;
+        }
+
+    //https://web.archive.org/web/20090304194122/http://msdn.microsoft.com:80/en-us/magazine/cc163367.aspx
+    public static int GenerateRandom(Int32 minValue, Int32 maxValue)
         {
             RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
             var byteArray = new byte[4];
@@ -108,7 +121,9 @@ namespace diceware
                 }
             }
         }
+        //end
 
+        //https://stackoverflow.com/questions/3769457/how-can-i-remove-accents-on-a-string
         public static IEnumerable<char> RemoveDiacriticsEnum(string src, bool compatNorm, Func<char, char> customFolding)
         {
             foreach (char c in src.Normalize(compatNorm ? NormalizationForm.FormKD : NormalizationForm.FormD))
@@ -137,7 +152,7 @@ namespace diceware
         {
             return RemoveDiacritics(src, compatNorm, c => c);
         }
-
+        //end
         private static void ShowHelp()
         {
             Console.WriteLine("Parameters:");
