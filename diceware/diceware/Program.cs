@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -14,9 +15,10 @@ namespace diceware
         private static int _numberOfWords = 5;
         private static int _minLength = 5;
         private static bool _cleanWords = true;
+        private static bool _appendDigit;
         private static string _separator = "*";
-        private static string _wordcase = "T";
-        private static readonly List<string> words = new List<string>();
+        private static string _wordCase = "T";
+        private static readonly List<string> Words = new List<string>();
 
         static void Main(string[] args)
         {
@@ -31,13 +33,16 @@ namespace diceware
                     "l|len|min=", v => _minLength = int.Parse(v)
                 },
                 {
-                    "c|clean|accents=", v => _cleanWords = (v == "Y")
+                    "c|clean|accents=", v => _cleanWords = (v.ToUpperInvariant() == "Y")
+                },
+                {
+                    "d|digit=", v => _appendDigit = (v.ToUpperInvariant() == "Y")
                 },
                 {
                     "s|sep|separator=", v => _separator = v
                 },
                 {
-                    "case=", v => _wordcase = v.ToUpperInvariant()
+                    "case=", v => _wordCase = v.ToUpperInvariant()
                 }
             };
             p.Parse(args);
@@ -48,7 +53,7 @@ namespace diceware
                 while (line != null)
                 {
                     var tokens = line.Split(" ");
-                    words.Add(tokens[1]);
+                    Words.Add(tokens[1]);
                     line = sr.ReadLine();
                 }
             }
@@ -60,14 +65,14 @@ namespace diceware
                 for (var j = 0; j < _numberOfWords; j++)
                 {
                     var num = GenerateRandom(0, 7775);
-                    if (words[num].Length < _minLength)
+                    if (Words[num].Length < _minLength)
                     {
                         j -= 1;
                         continue;
                     }
 
-                    var word = (_cleanWords ? RemoveDiacritics(words[num], true) : words[num]);
-                    switch (_wordcase)
+                    var word = (_cleanWords ? RemoveDiacritics(Words[num], true) : Words[num]);
+                    switch (_wordCase)
                     {
                         case "U":
                             word = word.ToUpperInvariant();
@@ -82,6 +87,11 @@ namespace diceware
                     }
                     password += (j > 0 ? _separator : "") + word;
                 }
+                if (_appendDigit)
+                {
+                    var digit = GenerateRandom(1, 99);
+                    password += _separator + digit;
+                }
                 Console.WriteLine("\t" + password);
             }
             Console.WriteLine("---");
@@ -94,8 +104,9 @@ namespace diceware
             var options = "These are ";
             options += _numberOfWords + " words, with min length of " + _minLength;
             options += ", formatted as " +
-                       (_wordcase == "L" ? "lowercase" : (_wordcase == "T" ? "titlecase" : "uppercase"));
-            options += ", separated by \\ " + _separator + " \\.";
+                       (_wordCase == "L" ? "lowercase" : (_wordCase == "T" ? "titlecase" : "uppercase"));
+            options += ", separated by \\ " + _separator + " \\, ";
+            options += (_appendDigit ? "with" : "without") + " number in the end."; 
             return options;
         }
 
@@ -164,6 +175,7 @@ namespace diceware
             Console.WriteLine("\t/(c|clean|accents)={Y|N}: Remove accents. default: Y");
             Console.WriteLine("\t/case={U|L|T}: Uppercase, Lowercase, Titlecase each word. default: T (titlecase)");
             Console.WriteLine("\t/(s|sep|separator)={character}: separator. you must enclose in quotes. default: '-'");
+            Console.WriteLine("\t/(d|digit)={Y|N}: End with number; if true, it will append a random number between 1 and 99. default: N");
             Console.ForegroundColor = currentColor;
             Environment.Exit(0);
         }
