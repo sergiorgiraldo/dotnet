@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
@@ -12,13 +10,15 @@ namespace diceware
 {
     class Program
     {
-        private static int _numberOfWords = 5;
+        private static int _numberOfWords = 6;
         private static int _minLength = 5;
         private static bool _cleanWords = true;
-        private static bool _appendDigit;
-        private static string _separator = "*";
-        private static string _wordCase = "T";
+        private static bool _appendDigit = false;
+        private static string _separator = " ";
+        private static string _ending = ".";
+        private static string _wordCase = "L";
         private static readonly List<string> Words = new List<string>();
+        private static string _symbols = "!@#$%&*()_+=-[{]};:<>,.?";
 
         static void Main(string[] args)
         {
@@ -36,7 +36,10 @@ namespace diceware
                     "c|clean|accents=", v => _cleanWords = (v.ToUpperInvariant() == "Y")
                 },
                 {
-                    "d|digit=", v => _appendDigit = (v.ToUpperInvariant() == "Y")
+                    "d|digit", v => _appendDigit = true
+                },
+                {
+                    "e|endwith=", v => _ending = v
                 },
                 {
                     "s|sep|separator=", v => _separator = v
@@ -58,6 +61,17 @@ namespace diceware
                 }
             }
 
+            if (_separator.ToLowerInvariant() == "rnd")
+            {
+                var index = GenerateRandom(0, 23);
+                _separator = _symbols[index].ToString();
+            }
+            if (_ending.ToLowerInvariant() == "rnd")
+            {
+                var index = GenerateRandom(0, 23);
+                _ending = _symbols[index].ToString();
+            }
+            
             Console.WriteLine("Here are 3 passwords, pick one:");
             for (var i = 0; i <= 2; i++)
             {
@@ -92,6 +106,7 @@ namespace diceware
                     var digit = GenerateRandom(1, 99);
                     password += _separator + digit;
                 }
+                password += _ending;
                 Console.WriteLine("\t" + password);
             }
             Console.WriteLine("---");
@@ -106,7 +121,8 @@ namespace diceware
             options += ", formatted as " +
                        (_wordCase == "L" ? "lowercase" : (_wordCase == "T" ? "titlecase" : "uppercase"));
             options += ", separated by \\ " + _separator + " \\, ";
-            options += (_appendDigit ? "with" : "without") + " number in the end."; 
+            options += (_appendDigit ? "with" : "without") + " number in the end, ";
+            options += "finished with \\ " + _ending + " \\";
             return options;
         }
 
@@ -173,8 +189,9 @@ namespace diceware
             Console.WriteLine("\t/(n|w|words)={number}: number of words. default: 5");
             Console.WriteLine("\t/(l|len|min)={number}: minimal length of each word. default: 5");
             Console.WriteLine("\t/(c|clean|accents)={Y|N}: Remove accents. default: Y");
-            Console.WriteLine("\t/case={U|L|T}: Uppercase, Lowercase, Titlecase each word. default: T (titlecase)");
-            Console.WriteLine("\t/(s|sep|separator)={character}: separator. you must enclose in quotes. default: '-'");
+            Console.WriteLine("\t/case={U|L|T}: Uppercase, Lowercase, Titlecase each word. default: L (lowercase)");
+            Console.WriteLine("\t/(e|endwith)={character}: ending character. you must enclose in quotes. if you provide 'rnd', a random symbol will be chosen. default: '.'");
+            Console.WriteLine("\t/(s|sep|separator)={character}: separator. you must enclose in quotes. if you provide 'rnd', a random symbol will be chosen. default: ' '");
             Console.WriteLine("\t/(d|digit)={Y|N}: End with number; if true, it will append a random number between 1 and 99. default: N");
             Console.ForegroundColor = currentColor;
             Environment.Exit(0);
