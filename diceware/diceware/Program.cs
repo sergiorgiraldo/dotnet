@@ -186,13 +186,13 @@ namespace diceware
             var currentColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("Parameters:");
-            Console.WriteLine("\t/(n|w|words)={number}: number of words. default: 5");
+            Console.WriteLine("\t/(n|w|words)={number}: number of words. default: 6");
             Console.WriteLine("\t/(l|len|min)={number}: minimal length of each word. default: 5");
-            Console.WriteLine("\t/(c|clean|accents)={Y|N}: Remove accents. default: Y");
+            Console.WriteLine("\t/(c|clean|accents)={Y|N}: Remove accents. default: Yes");
             Console.WriteLine("\t/case={U|L|T}: Uppercase, Lowercase, Titlecase each word. default: L (lowercase)");
             Console.WriteLine("\t/(e|endwith)={character}: ending character. you must enclose in quotes. if you provide 'rnd', a random symbol will be chosen. default: '.'");
             Console.WriteLine("\t/(s|sep|separator)={character}: separator. you must enclose in quotes. if you provide 'rnd', a random symbol will be chosen. default: ' '");
-            Console.WriteLine("\t/(d|digit)={Y|N}: End with number; if true, it will append a random number between 1 and 99. default: N");
+            Console.WriteLine("\t/(d|digit): Append a random number between 1 and 99. default: No");
             Console.ForegroundColor = currentColor;
             Environment.Exit(0);
         }
