@@ -5,8 +5,6 @@
             Me.Hide()
             Form1.Show()
             e.Handled = True
-        ElseIf e.KeyCode = System.Windows.Forms.Keys.R Then
-            Process.Start("C:\Users\segiral\Documents\datasRestritas.pdf")
         ElseIf e.KeyCode = System.Windows.Forms.Keys.G Then
             Dim res As String = InputBox("Ir para data (formato: DD/MM/YYYY)", "Ir para")
             Dim data As Date

@@ -19,16 +19,16 @@ Partial Class Form2
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.MonthCalendar1 = New System.Windows.Forms.MonthCalendar
-        Me.Label1 = New System.Windows.Forms.Label
+        Me.MonthCalendar1 = New System.Windows.Forms.MonthCalendar()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'MonthCalendar1
         '
         Me.MonthCalendar1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MonthCalendar1.CalendarDimensions = New System.Drawing.Size(3, 4)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.MonthCalendar1.CalendarDimensions = New System.Drawing.Size(4, 3)
         Me.MonthCalendar1.Font = New System.Drawing.Font("Arial", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MonthCalendar1.Location = New System.Drawing.Point(11, 7)
         Me.MonthCalendar1.MaxSelectionCount = 1
@@ -41,18 +41,18 @@ Partial Class Form2
         '
         Me.Label1.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.Label1.Font = New System.Drawing.Font("Arial", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(0, 896)
+        Me.Label1.Location = New System.Drawing.Point(0, 667)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(1005, 26)
+        Me.Label1.Size = New System.Drawing.Size(1331, 26)
         Me.Label1.TabIndex = 2
-        Me.Label1.Text = "R: Datas Restritas / G: Ir para / M: Ver 3 meses / X : Fechar"
+        Me.Label1.Text = "G: Ir para / M: Ver 3 meses / X : Fechar"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Form2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1005, 922)
+        Me.ClientSize = New System.Drawing.Size(1331, 693)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.MonthCalendar1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow

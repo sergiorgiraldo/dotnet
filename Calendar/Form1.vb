@@ -36,8 +36,8 @@ Public Class Form1
     Friend WithEvents MonthCalendar1 As System.Windows.Forms.MonthCalendar
     Friend WithEvents Label1 As System.Windows.Forms.Label
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.MonthCalendar1 = New System.Windows.Forms.MonthCalendar
-        Me.Label1 = New System.Windows.Forms.Label
+        Me.MonthCalendar1 = New System.Windows.Forms.MonthCalendar()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'MonthCalendar1
@@ -59,9 +59,8 @@ Public Class Form1
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(1204, 26)
         Me.Label1.TabIndex = 1
-        Me.Label1.Text = "M: Comitê de Mudanças / R: Datas Restritas / G: Ir para /  Shift+Up : - 1 mês / S" & _
-            "hift+Down : + 1 mês / Control+Up : - 1 ano / Control+Down : + 1 ano / H : Hoje /" & _
-            " Y: Ver ano inteiro / X : Fechar"
+        Me.Label1.Text = "G: Ir para /  Shift+Up : - 1 mês / Shift+Down : + 1 mês / Control+Up : - 1 ano / " &
+    "Control+Down : + 1 ano / H : Hoje / Y: Ver ano inteiro / X : Fechar"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Form1
@@ -106,17 +105,7 @@ Public Class Form1
 
     Private Sub MonthCalendar1_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles MonthCalendar1.KeyDown
         Dim d As DateTime
-        If e.KeyCode = System.Windows.Forms.Keys.R Then
-            Dim fileStream As Byte() = My.Resources.datasRestritas
-            Dim tempFilename As String = System.IO.Path.GetTempFileName() + ".pdf"
-            Dim writer As FileStream = New FileStream(tempFilename, System.IO.FileMode.CreateNew)
-            writer.Write(fileStream, 0, fileStream.Length)
-            writer.Close()
-            writer.Dispose()
-            Process.Start(tempFilename)
-        ElseIf e.KeyCode = System.Windows.Forms.Keys.M Then
-            Process.Start("http://sscorp1.itau/sites/sass/Wiki/Paginas%20Wiki/Calendário%20Geral%20dos%20Comitês%20de%20Mudanças.aspx")
-        ElseIf e.KeyCode = System.Windows.Forms.Keys.G Then
+        If e.KeyCode = System.Windows.Forms.Keys.G Then
             Dim res As String = InputBox("Ir para data (formato: DD/MM/YYYY)", "Ir para")
             Dim data As Date
             If (Date.TryParseExact(res, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentUICulture, Globalization.DateTimeStyles.AssumeLocal, data)) Then
@@ -162,5 +151,9 @@ Public Class Form1
         Else
             e.Handled = False
         End If
+    End Sub
+
+    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+
     End Sub
 End Class
