@@ -71,7 +71,8 @@ namespace diceware
                 var index = GenerateRandom(0, 23);
                 _ending = _symbols[index].ToString();
             }
-            
+
+            var passwordChoices = new string[3];
             Console.WriteLine("Here are 3 passwords, pick one:");
             for (var i = 0; i <= 2; i++)
             {
@@ -108,9 +109,27 @@ namespace diceware
                 }
                 password += _ending;
                 Console.WriteLine("\t" + password);
+                passwordChoices[i] = password;
             }
             Console.WriteLine("---");
             Console.WriteLine(ShowOptions());
+            Console.WriteLine("---");
+            Console.WriteLine("Your choice (1,2,3)(default: 1)?");
+
+            var choice = Console.ReadLine();
+            if (string.IsNullOrEmpty(choice)) choice = "1";
+            if (choice != "1" && choice != "2" && choice != "3")
+            {
+                Console.WriteLine("Invalid choice, exiting.");
+            }
+            else
+            {
+                var nChoice = Int32.Parse(choice);
+                nChoice -= 1;
+                TextCopy.Clipboard.SetText(passwordChoices[nChoice]);
+                Console.WriteLine("Option " + choice + " copied to clipboard.");
+            }
+
 
         }
 
