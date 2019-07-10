@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ReviewersRoundRobin": {
+      "commandName": "Project",
+      "commandLineArgs": "foo"
+    }
+  }
+}
