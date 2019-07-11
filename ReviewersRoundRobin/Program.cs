@@ -26,7 +26,8 @@ namespace ReviewersRoundRobin
                 Environment.Exit(1);
             }
 
-            var project = "Foo" + DateTime.Now.ToString("HHmmss");
+            var project = args[0].Split("|")[0];//"Foo" + DateTime.Now.ToString("HHmmss");
+            var author = args[0].Split("|")[1];//"Foo" + DateTime.Now.ToString("HHmmss");
 
             //read list of reviewers
             using (var sr = new StreamReader(ReviewersFilename))
@@ -92,9 +93,15 @@ namespace ReviewersRoundRobin
                 }
             }
 
-            var reviewer1 = QReviewers.Dequeue();
-            var reviewer2 = QReviewers.Dequeue();
-            var reviewer3 = QReviewers.Dequeue();
+            QReviewers.TryDequeue(out var reviewer1);
+            while (reviewer1 == author) { QReviewers.TryDequeue(out reviewer1);}
+
+            QReviewers.TryDequeue(out var reviewer2);
+            while (reviewer2 == author) { QReviewers.TryDequeue(out reviewer2);}
+
+            QReviewers.TryDequeue(out var reviewer3);
+            while (reviewer3 == author){QReviewers.TryDequeue(out reviewer3);}
+
             LastReviewer = reviewer3;
 
             //save state
