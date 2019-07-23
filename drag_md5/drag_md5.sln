@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "drag_md5", "drag_md5\drag_md5.csproj", "{0E5B7213-E387-45DA-92BC-15C2E82B345F}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{0E5B7213-E387-45DA-92BC-15C2E82B345F}.Debug.ActiveCfg = Debug|.NET
+		{0E5B7213-E387-45DA-92BC-15C2E82B345F}.Debug.Build.0 = Debug|.NET
+		{0E5B7213-E387-45DA-92BC-15C2E82B345F}.Release.ActiveCfg = Release|.NET
+		{0E5B7213-E387-45DA-92BC-15C2E82B345F}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
