@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MyPinboard": {
+      "commandName": "Project",
+      "commandLineArgs": "reading"
+    }
+  }
+}
