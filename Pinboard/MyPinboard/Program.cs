@@ -18,10 +18,7 @@ namespace MyPinboard
                 {
                     if (parameters == "-h" || parameters == "/?")
                     {
-                        Console.WriteLine("mypinboard TAGS_SEPARATED_BY_COMMA");
-                        Console.WriteLine("mypinboard /tags");
-                        Console.WriteLine("mypinboard /t");
-                        Environment.Exit(0);
+                        ShowHelp();        
                     }
 
                     if (parameters == "/tags" || parameters == "/t")
@@ -35,7 +32,9 @@ namespace MyPinboard
                         
                 }
             }
-
+            else{
+                ShowHelp();        
+            }
             //get your api token from https://pinboard.in/settings/password and store in a file elsewhere
             string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string apiToken = File.ReadAllText(Path.Combine(userPath, "pinboard.key"));
@@ -61,6 +60,12 @@ namespace MyPinboard
                     }
                 }
             }
+        }
+
+        private static void ShowHelp(){
+            Console.WriteLine("mypinboard TAGS_SEPARATED_BY_COMMA");
+            Console.WriteLine("mypinboard /tags|/t");
+            Environment.Exit(0);
         }
     }
 }
