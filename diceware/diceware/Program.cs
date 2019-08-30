@@ -14,8 +14,9 @@ namespace diceware
         private static int _minLength = 5;
         private static bool _cleanWords = true;
         private static bool _appendDigit = false;
+        private static bool _bare = false;
         private static string _separator = " ";
-        private static string _ending = "rnd";
+        private static string _ending = "";
         private static string _wordCase = "L";
         private static readonly List<string> Words = new List<string>();
         private static string _symbols = "!@#$%&*()_+=-[{]};:<>,.?";
@@ -46,6 +47,9 @@ namespace diceware
                 },
                 {
                     "case=", v => _wordCase = v.ToUpperInvariant()
+                },
+                {
+                    "b|bare", v => _bare = true
                 }
             };
             p.Parse(args);
@@ -73,7 +77,7 @@ namespace diceware
             }
 
             var passwordChoices = new string[3];
-            Console.WriteLine("Here are 3 passwords, pick one:");
+            Output("Here are 3 passwords, pick one:");
             for (var i = 0; i <= 2; i++)
             {
                 var password = "";
@@ -108,29 +112,41 @@ namespace diceware
                     password += _separator + digit;
                 }
                 password += _ending;
-                Console.WriteLine("\t" + password);
+                Output(password);
                 passwordChoices[i] = password;
             }
-            Console.WriteLine("---");
-            Console.WriteLine(ShowOptions());
-            Console.WriteLine("---");
-            Console.WriteLine("Your choice (1,2,3)(default: 1)?");
+            Output("---");
+            Output(ShowOptions());
+            Output("---");
+            Output("Your choice (1,2,3)(default: 1)?");
 
-            var choice = Console.ReadLine();
-            if (string.IsNullOrEmpty(choice)) choice = "1";
-            if (choice != "1" && choice != "2" && choice != "3")
+            if (_bare)
             {
-                Console.WriteLine("Invalid choice, exiting.");
+                TextCopy.Clipboard.SetText(passwordChoices[0]);
+                Output("Copied to clipboard\n", true);
+                Output(passwordChoices[0], true);
             }
             else
             {
-                var nChoice = Int32.Parse(choice);
-                nChoice -= 1;
-                TextCopy.Clipboard.SetText(passwordChoices[nChoice]);
-                Console.WriteLine("Option " + choice + " copied to clipboard.");
+                var choice = Console.ReadLine();
+                if (string.IsNullOrEmpty(choice)) choice = "1";
+                if (choice != "1" && choice != "2" && choice != "3")
+                {
+                    Output("Invalid choice, exiting.");
+                }
+                else
+                {
+                    var nChoice = Int32.Parse(choice);
+                    nChoice -= 1;
+                    TextCopy.Clipboard.SetText(passwordChoices[nChoice]);
+                    Output("Option " + choice + " copied to clipboard.");
+                }
             }
+        }
 
-
+        private static void Output(string what, bool force = false)
+        {
+            if (!_bare || force) Console.WriteLine(what);
         }
 
         private static string ShowOptions()
@@ -204,14 +220,14 @@ namespace diceware
         {
             var currentColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine("Parameters:");
-            Console.WriteLine("\t/(n|w|words)={number}: number of words. default: 6");
-            Console.WriteLine("\t/(l|len|min)={number}: minimal length of each word. default: 5");
-            Console.WriteLine("\t/(c|clean|accents)={Y|N}: Remove accents. default: Yes");
-            Console.WriteLine("\t/case={U|L|T}: Uppercase, Lowercase, Titlecase each word. default: L (lowercase)");
-            Console.WriteLine("\t/(e|endwith)={character}: ending character. you must enclose in quotes. if you provide 'rnd', a random symbol will be chosen. default: 'rnd'");
-            Console.WriteLine("\t/(s|sep|separator)={character}: separator. you must enclose in quotes. if you provide 'rnd', a random symbol will be chosen. default: ' '");
-            Console.WriteLine("\t/(d|digit): Append a random number between 1 and 99. default: No");
+            Output("Parameters:");
+            Output("\t/(n|w|words)={number}: number of words. default: 6");
+            Output("\t/(l|len|min)={number}: minimal length of each word. default: 5");
+            Output("\t/(c|clean|accents)={Y|N}: Remove accents. default: Yes");
+            Output("\t/case={U|L|T}: Uppercase, Lowercase, Titlecase each word. default: L (lowercase)");
+            Output("\t/(e|endwith)={character}: ending character. you must enclose in quotes. if you provide 'rnd', a random symbol will be chosen. default: ' '");
+            Output("\t/(s|sep|separator)={character}: separator. you must enclose in quotes. if you provide 'rnd', a random symbol will be chosen. default: ' '");
+            Output("\t/(d|digit): Append a random number between 1 and 99. default: No");
             Console.ForegroundColor = currentColor;
             Environment.Exit(0);
         }

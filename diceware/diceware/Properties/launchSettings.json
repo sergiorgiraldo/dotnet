@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "diceware": {
+      "commandName": "Project",
+      "commandLineArgs": "/b"
+    }
+  }
+}
