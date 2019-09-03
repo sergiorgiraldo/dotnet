@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MySpotify": {
+      "commandName": "Project",
+      "commandLineArgs": "/p C:\\tmp\\lista.txt foobar"
+    }
+  }
+}
