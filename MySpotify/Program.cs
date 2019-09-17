@@ -67,7 +67,7 @@ namespace MySpotify
                 parameters[2], 
                 true, 
                 false, 
-                parameters[2]);
+                parameters[3]);
             if (!playlist.HasError())
             {
                 foreach (var song in songsToAdd)
@@ -115,7 +115,7 @@ namespace MySpotify
 
         private static void Help()
         {
-            Console.WriteLine("MySpotify /p <FILE_WITH_MUSICS_TO ADD> <NAME_OF_PLAYLIST>");
+            Console.WriteLine("MySpotify /p <FILE_WITH_MUSICS_TO ADD> <NAME_OF_PLAYLIST> <DESCRIPTION_OF_PLAYLIST>");
         }
 
 
