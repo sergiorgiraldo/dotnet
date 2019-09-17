@@ -1,0 +1,3 @@
+﻿dotnet pack
+dotnet tool uninstall --global myspotify
+dotnet tool install --global --add-source ./nupkg myspotify
