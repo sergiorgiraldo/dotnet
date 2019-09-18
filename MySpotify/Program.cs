@@ -81,11 +81,13 @@ namespace MySpotify
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Added");
                     }
-                    else
+                    else //not found
                     {
                         if (song.Contains("-"))
                         {
-                            var auxSong = song.Split("-")[1];
+                            var parts = song.Split("-");
+                            //artist - track
+                            var auxSong = parts[1];
                             item = _spotify.SearchItems(auxSong, SearchType.Track, 1);
                             if (item.Tracks.Total > 0)
                             {
@@ -95,8 +97,20 @@ namespace MySpotify
                             }
                             else
                             {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("**** Song not found ****");
+                                //track - artist
+                                auxSong = parts[0];
+                                item = _spotify.SearchItems(auxSong, SearchType.Track, 1);
+                                if (item.Tracks.Total > 0)
+                                {
+                                    _spotify.AddPlaylistTrack(playlist.Id, item.Tracks.Items[0].Uri);
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    Console.WriteLine("Added");
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("**** Song not found ****");
+                                }
                             }
                         }
                         else
