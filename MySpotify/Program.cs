@@ -72,12 +72,14 @@ namespace MySpotify
             {
                 foreach (var song in songsToAdd)
                 {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(">>>>" + song);
                     SearchItem item = _spotify.SearchItems(song, SearchType.Track, 1);
                     if (item.Tracks.Total > 0)
                     {
                         _spotify.AddPlaylistTrack(playlist.Id, item.Tracks.Items[0].Uri);
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("Added " + song);
+                        Console.WriteLine("Added");
                     }
                     else
                     {
@@ -89,18 +91,18 @@ namespace MySpotify
                             {
                                 _spotify.AddPlaylistTrack(playlist.Id, item.Tracks.Items[0].Uri);
                                 Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("Added " + song);
+                                Console.WriteLine("Added");
                             }
                             else
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("**** Song not found **** " + song);
+                                Console.WriteLine("**** Song not found ****");
                             }
                         }
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("**** Song not found **** " + song);
+                            Console.WriteLine("**** Song not found ****");
                         }
                     }
                 }
