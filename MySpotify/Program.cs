@@ -1,7 +1,5 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using System.IO;
-using System.Threading.Tasks;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Auth;
 using SpotifyAPI.Web.Enums;
@@ -54,6 +52,10 @@ namespace MySpotify
                 if (parameters[0] == "/p")
                 {
                     CreatePlaylist();
+                }
+                else
+                {
+                    Help();
                 }
             }
         }
