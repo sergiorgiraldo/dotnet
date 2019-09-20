@@ -70,8 +70,9 @@ namespace MySpotify
                 parameters[3]);
             if (!playlist.HasError())
             {
-                foreach (var song in songsToAdd)
+                foreach (var song_ in songsToAdd)
                 {
+                    var song = song_.Replace("\"", "");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine(">>>>" + song);
                     SearchItem item = _spotify.SearchItems(song, SearchType.Track, 1);
@@ -79,7 +80,7 @@ namespace MySpotify
                     {
                         _spotify.AddPlaylistTrack(playlist.Id, item.Tracks.Items[0].Uri);
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("Added");
+                    Console.WriteLine("Added");
                     }
                     else //not found
                     {
