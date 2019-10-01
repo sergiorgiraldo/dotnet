@@ -22,7 +22,7 @@ namespace journey
                 Environment.Exit(0);
             }
 
-            string body = args[0];
+            string body = string.Join(" ", args);
 
             var smtp = new SmtpClient
             {
