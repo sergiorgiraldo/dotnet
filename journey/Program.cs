@@ -55,6 +55,7 @@ namespace journey
             const string subject = "";
 
             //get an app password from https://myaccount.google.com/apppasswords and store in a file elsewhere
+            //last pass: Gmail apps Console apps
             string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string fromPassword = File.ReadAllText(Path.Combine(userPath, "gmail.key"));
 
