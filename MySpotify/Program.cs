@@ -49,13 +49,13 @@ namespace MySpotify
             }
             else
             {
-                if (parameters[0] == "/p")
+                if (parameters[0] == "/h")
                 {
-                    CreatePlaylist();
+                    Help();
                 }
                 else
                 {
-                    Help();
+                    CreatePlaylist();
                 }
             }
         }
@@ -100,6 +100,7 @@ namespace MySpotify
                             }
                             else
                             {
+                                DoThings();
                                 //track - artist
                                 auxSong = parts[0];
                                 item = _spotify.SearchItems(auxSong, SearchType.Track, 1);
@@ -134,29 +135,7 @@ namespace MySpotify
 
         private static void Help()
         {
-            Console.WriteLine("MySpotify /p <FILE_WITH_MUSICS_TO ADD> <NAME_OF_PLAYLIST> <DESCRIPTION_OF_PLAYLIST>");
+            Console.WriteLine("MySpotify <FILE_WITH_MUSICS_TO ADD> <NAME_OF_PLAYLIST> <DESCRIPTION_OF_PLAYLIST>");
         }
-
-
-        /*
-        static void Main(string[] parameters)
-        {
-            _spotify = Init().Result;
-
-        }
-
-        static async Task<SpotifyWebAPI> Init()
-        {
-            CredentialsAuth auth = new CredentialsAuth("6124e12cbb1c4e779faf7f0b52f42c51", "4fb499e92a394e8ea730ed0f0a403a2e");
-            Token token = await auth.GetToken();
-            var auxSpotifyWebAPI = new SpotifyWebAPI()
-            {
-                AccessToken = token.AccessToken,
-                TokenType = token.TokenType
-            };
-
-            return auxSpotifyWebAPI;
-        }
-        */
     }
 }
