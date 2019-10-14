@@ -74,7 +74,7 @@ namespace MySpotify
             {
                 foreach (var song_ in songsToAdd)
                 {
-                    var song = song_.Replace("\"", "");
+                    var song = song_.Replace("\"", "").Replace("\t", " - ");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine(">>>>" + song);
                     SearchItem item = _spotify.SearchItems(song, SearchType.Track, 1);
