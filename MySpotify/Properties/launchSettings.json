@@ -2,7 +2,7 @@
   "profiles": {
     "MySpotify": {
       "commandName": "Project",
-      "commandLineArgs": "/p C:\\tmp\\lista.txt foobar"
+      "commandLineArgs": "C:\\tmp\\lista.txt \"Vida Fodona #608\" \"Vida Fodona #608: Bem nostálgico\""
     }
   }
 }

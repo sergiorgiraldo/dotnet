@@ -53,6 +53,10 @@ namespace MySpotify
                 {
                     Help();
                 }
+                else if (parameters[0] == "/d")
+                {
+                    DeletePlaylist();
+                }
                 else
                 {
                     CreatePlaylist();
@@ -60,16 +64,21 @@ namespace MySpotify
             }
         }
 
+        private static void DeletePlaylist()
+        {
+            throw new NotImplementedException();
+        }
+
         private static void CreatePlaylist()
         {
             var currentColor = Console.ForegroundColor;
-            var songsToAdd = File.ReadAllLines(parameters[1]);
+            var songsToAdd = File.ReadAllLines(parameters[0]);
             var playlist = _spotify.CreatePlaylist(
                 _user.Id,
-                parameters[2], 
+                parameters[1], 
                 true, 
                 false, 
-                parameters[3]);
+                parameters[2]);
             if (!playlist.HasError())
             {
                 foreach (var song_ in songsToAdd)
@@ -100,7 +109,6 @@ namespace MySpotify
                             }
                             else
                             {
-                                DoThings();
                                 //track - artist
                                 auxSong = parts[0];
                                 item = _spotify.SearchItems(auxSong, SearchType.Track, 1);
