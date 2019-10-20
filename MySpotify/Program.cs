@@ -91,7 +91,7 @@ namespace MySpotify
                     {
                         _spotify.AddPlaylistTrack(playlist.Id, item.Tracks.Items[0].Uri);
                         Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Added");
+                    	Console.WriteLine("Added");
                     }
                     else //not found
                     {
