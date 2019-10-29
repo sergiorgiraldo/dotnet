@@ -13,3 +13,5 @@ On **{DATE}**
 {SUMMARY}
 
 ## Notes
+
+{NOTES}

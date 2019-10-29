@@ -7,9 +7,8 @@ namespace newMeeting
     {
         static void Main(string[] args)
         {
-            
-            if (args.Length != 5){
-                Console.WriteLine("newMeeting \"<TITLE>\" \"<PEOPLE SEPARATED BY ;>\" \"<PLACE>\" \"<DATETIME>\" \"<SUMMARY>\"");
+            if (args.Length < 5){
+                Console.WriteLine("newMeeting \"<TITLE>\" \"<PEOPLE SEPARATED BY ;>\" \"<PLACE>\" \"<DATETIME>\" \"<SUMMARY>\" [\"<NOTES>\"]");
                 Environment.Exit(0);
             }
             else{
@@ -18,7 +17,12 @@ namespace newMeeting
                 var people = args[1].Split(';');
                 var place = args[2];
                 var dt = args[3];
-                var summary = args[4];
+                var summary = args[4];                
+                var notes = "";
+                if (args.Length == 6)
+                {
+                    notes = args[5];
+                }
                 template = template.Replace("{TITLE}", title);
                 var people_ = "";
                 foreach(var p in people){
@@ -28,11 +32,12 @@ namespace newMeeting
                 template = template.Replace("{PLACE}", place);
                 template = template.Replace("{DATE}", dt);
                 template = template.Replace("{SUMMARY}", summary);
+                template = template.Replace("{NOTES}", notes);
 
                 var rootDir  = GetApplicationRoot();
                 var wholeDir = System.IO.Path.Combine(rootDir, "out");
                 System.IO.Directory.CreateDirectory(wholeDir);
-                var newPath = System.IO.Path.Combine(wholeDir, title + ".md");
+                var newPath = System.IO.Path.Combine(wholeDir, title.Replace(" ", "_") + ".md");
                 System.IO.File.WriteAllText(newPath, template);
                 
                 var process = new System.Diagnostics.Process();
