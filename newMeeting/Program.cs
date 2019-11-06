@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
 using HumanDateParser;
 
@@ -8,14 +9,17 @@ namespace newMeeting
     {
         static void Main(string[] args)
         {
-            if (args.Length < 5){
+
+            if (args.Length < 5){                
                 Console.WriteLine("newMeeting \"<TITLE>\" \"<PEOPLE SEPARATED BY ;>\" \"<PLACE>\" \"<DATE>\" \"<TIME>\" \"<SUMMARY>\" [\"<NOTES>\"]");
-                Console.WriteLine("\nif any of the parameters starts with - (minus), assume it is a path and the file will parsed.");
+                Console.WriteLine("\nif (people|title|summary|notes) parameter starts with - (minus), assume it is a path and the file will parsed.");
+                Console.WriteLine("Date can be written fluently like in 1 month/after 15 days/tuesday/in 2 weeks. For this, start with -(minus)");
                 Console.WriteLine("\n***** REQUIRES mdpdf NPM MODULE*****");
+                Console.WriteLine("INFO: Internal path:" + GetApplicationRoot());
                 Environment.Exit(0);
             }
             else{
-                var template = System.IO.File.ReadAllText(System.IO.Path.Combine(GetApplicationRoot(), "template.md"));
+                var template = File.ReadAllText(Path.Combine(GetApplicationRoot(), "template.md"));
                 var title = Get(args[0]);
                 var people = Get(args[1]);
                 var place = Get(args[2]);
@@ -39,21 +43,21 @@ namespace newMeeting
                 template = template.Replace("{NOTES}", notes);
 
                 var rootDir  = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                var wholeDir = System.IO.Path.Combine(rootDir, "out");
-                System.IO.Directory.CreateDirectory(wholeDir);
-                var newPath = System.IO.Path.Combine(wholeDir, dt + "_" +  title.Replace(" ", "_") + ".md");
-                System.IO.File.WriteAllText(newPath, template);
+                var wholeDir = Path.Combine(rootDir, "out");
+                Directory.CreateDirectory(wholeDir);
+                var newPath = Path.Combine(wholeDir, dt + "_" +  title.Replace(" ", "_") + ".md");
+                File.WriteAllText(newPath, template);
                 
                 var process = new System.Diagnostics.Process();
                 var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                process.StartInfo.FileName = System.IO.Path.Combine(appDataFolder, @"npm\mdpdf.cmd");
+                process.StartInfo.FileName = Path.Combine(appDataFolder, @"npm\mdpdf.cmd");
                 process.StartInfo.Arguments = newPath;
                 process.StartInfo.UseShellExecute = true;
                 process.StartInfo.CreateNoWindow = true;
                 process.Start();
                 process.WaitForExit();
                 process.Dispose();
-                System.IO.File.Delete(newPath);
+                File.Delete(newPath);
                 Console.WriteLine("Saved at " + newPath.Replace(".md", ".pdf"));
 
             }
@@ -66,29 +70,15 @@ namespace newMeeting
                 return what;
         }
         public static string Interpret(string what){
-            if (what.ToUpper() == "TODAY")
-                return DateTime.Now.ToString("yyyyMMdd");
-            else if (what.ToUpper() == "TOMORROW")
-                return DateTime.Now.AddDays(1).ToString("yyyyMMdd");
-            else if (what.StartsWith("+"))
-                return DateTime.Now.AddDays(int.Parse(what.Substring(1))).ToString("yyyyMMdd");
+            if (what.StartsWith("-"))
+                return DateParser.Parse(what).ToString("yyyyMMdd");
             else    
                 return what;
-        }
-        //TODO
-        public static DateTime GetNextWeekday(this DateTime start, DayOfWeek day)
-        {
-            // The (... + 7) % 7 ensures we end up with a value in the range [0, 6]
-            int daysToAdd = ((int) day - (int) start.DayOfWeek + 7) % 7;
-            return start.AddDays(daysToAdd);
         }
 
         public static string GetApplicationRoot()
         {
-            var exePath = System.IO.Path.GetDirectoryName(System.Reflection
-                            .Assembly.GetExecutingAssembly().CodeBase);
-            var appPathMatcher=new Regex(@"(?<!fil)[A-Za-z]:\\+[\S\s]*?(?=\\+bin)");
-            var appRoot = appPathMatcher.Match(exePath).Value;
+            var appRoot = Path.GetDirectoryName(Path.GetFullPath(new System.Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).AbsolutePath));
             return appRoot;
         }
 
