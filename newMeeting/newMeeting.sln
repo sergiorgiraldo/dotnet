@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "newMeeting", "newMeeting.csproj", "{85ACEBAC-B8D4-4CE0-835B-E5CE07522568}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HumanDateParser", "..\..\human-date-parser\HumanDateParser\HumanDateParser.csproj", "{FAB9D2AA-0CFA-45CA-8F1B-2F07A7BA3CAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{85ACEBAC-B8D4-4CE0-835B-E5CE07522568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85ACEBAC-B8D4-4CE0-835B-E5CE07522568}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85ACEBAC-B8D4-4CE0-835B-E5CE07522568}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85ACEBAC-B8D4-4CE0-835B-E5CE07522568}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAB9D2AA-0CFA-45CA-8F1B-2F07A7BA3CAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAB9D2AA-0CFA-45CA-8F1B-2F07A7BA3CAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAB9D2AA-0CFA-45CA-8F1B-2F07A7BA3CAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAB9D2AA-0CFA-45CA-8F1B-2F07A7BA3CAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C438A857-55B9-4FE7-B503-291F8D0602D8}
+	EndGlobalSection
+EndGlobal
