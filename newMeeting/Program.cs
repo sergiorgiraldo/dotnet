@@ -11,11 +11,12 @@ namespace newMeeting
         {
 
             if (args.Length < 5){                
-                Console.WriteLine("newMeeting \"<TITLE>\" \"<PEOPLE SEPARATED BY ;>\" \"<PLACE>\" \"<DATE>\" \"<TIME>\" \"<SUMMARY>\" [\"<NOTES>\"]");
+                Console.WriteLine("newMeeting \"<TITLE>\" \"<PEOPLE SEPARATED BY ;>\" \"<PLACE>\" \"<DATE>\" \"<TIME>\" \"<SUMMARY>\" [\"<NOTES>\"] [/p]");
                 Console.WriteLine("\nif (people|title|summary|notes) parameter starts with - (minus), assume it is a path and the file will parsed.");
                 Console.WriteLine("Date can be written fluently like in 1 month/after 15 days/tuesday/in 2 weeks. For this, start with -(minus)");
-                Console.WriteLine("\n***** REQUIRES mdpdf NPM MODULE*****");
-                Console.WriteLine("INFO: Internal path:" + GetApplicationRoot());
+                Console.WriteLine("/p is parameter to print. It must be the last parameter.");
+                Console.WriteLine("\n***** REQUIRES mdpdf NPM MODULE");
+                Console.WriteLine("\n***** INFO: Internal path:" + GetApplicationRoot());
                 Environment.Exit(0);
             }
             else{
@@ -25,11 +26,13 @@ namespace newMeeting
                 var place = Get(args[2]);
                 var dt = Interpret(args[3]);
                 var tm = Get(args[4]);
-                var summary = Get(args[5]);                
+                var summary = Get(args[5]);
                 var notes = "";
-                if (args.Length == 7)
+                if (args.Length >= 7)
                 {
-                    notes = Get(args[6]);
+                    if (args[6] != "/p") { 
+                        notes = Get(args[6]);
+                    }
                 }
                 template = template.Replace("{TITLE}", title);
                 var people_ = "";
@@ -56,10 +59,21 @@ namespace newMeeting
                 process.StartInfo.CreateNoWindow = true;
                 process.Start();
                 process.WaitForExit();
+
+                var pdfPath = newPath.Replace(".md", ".pdf");
+
+                if (args[args.Length - 1] == "/p") //print
+                {
+                    process.StartInfo.FileName = "powershell";
+                    process.StartInfo.Arguments = " -Command \"Start-Process –FilePath " + pdfPath + " –Verb Print -PassThru | %{ sleep 10;$_} | kill";
+                    process.StartInfo.UseShellExecute = true;
+                    process.StartInfo.CreateNoWindow = false;
+                    process.Start();
+                    process.WaitForExit();
+                }
                 process.Dispose();
                 File.Delete(newPath);
-                Console.WriteLine("Saved at " + newPath.Replace(".md", ".pdf"));
-
+                Console.WriteLine("Saved at " + pdfPath);
             }
         }
 
