@@ -19,7 +19,7 @@ namespace shorten
             var shortenedUrl = Shorten(args[0]).Replace("bit.ly", "s.giral.do");
 
             //insert into giral.do googl table
-            using(MySql.Simple.Database db = "Server=xmysql.giral.do;Uid=giral;Database=giral;password=Yy%49utcmT2MbNEwV9n8;SslMode=none"){
+            using(MySql.Simple.Database db = ""){
                 var sqlStatement = string.Format("INSERT INTO googl (url, short, myName) VALUES ('{0}','{1}','')",args[0], shortenedUrl);
                 db.Execute(sqlStatement);
 
@@ -32,7 +32,7 @@ namespace shorten
         public static string Shorten(string longUrl)
         {
             //get access token for bity in lastpass
-            var url = string.Format("https://api-ssl.bitly.com/v3/shorten?format=json&longUrl={0}&access_token=481c272045921ce45d4ab921284dbe839246370f", longUrl);
+            var url = string.Format("https://api-ssl.bitly.com/v3/shorten?format=json&longUrl={0}&access_token=", longUrl);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             try
