@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "newMeeting": {
+      "commandName": "Project",
+      "commandLineArgs": "\"Eduardo-Buscapé\" \"Eduardo Akira;Sérgio Giraldo\" \"8.1\" \"-today\" \"09:00\" \"Minha vaga :)\" /p"
+    }
+  }
+}

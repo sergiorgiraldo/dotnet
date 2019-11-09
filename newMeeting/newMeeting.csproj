@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>netcoreapp2.2</TargetFramework>
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>newmeeting</ToolCommandName>
+		<PackageOutputPath>./nupkg</PackageOutputPath>
+    <Deterministic>False</Deterministic>
+    <Version>1.0.0.0</Version>
+    <Authors>Sérgio Giraldo</Authors>
+    <Company>sergiorgiraldo</Company>
+    <Product>newMeeting</Product>
+    <AssemblyVersion>1.0.0.*</AssemblyVersion>
+    <FileVersion>1.0.0.*</FileVersion>
+    <NeutralLanguage>pt-br</NeutralLanguage>
+    <Description>command line to generate meeting notes</Description>
+    <Copyright>Copyright sergiorgiraldo 2019</Copyright>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+		<None Update="template.md" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\human-date-parser\HumanDateParser\HumanDateParser.csproj" />
+  </ItemGroup>
+
+</Project>

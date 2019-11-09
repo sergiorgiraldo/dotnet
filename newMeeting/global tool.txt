@@ -1,0 +1,3 @@
+﻿dotnet pack
+dotnet tool uninstall --global newmeeting
+dotnet tool install --global --add-source ./nupkg newmeeting
