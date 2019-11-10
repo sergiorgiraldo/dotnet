@@ -17,9 +17,10 @@ namespace journey
                 Console.WriteLine("{task}: register activity in Journey");
                 Environment.Exit(0);
             }
-
+            string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            
             if (args[0] == "/done"){
-                var pathTodo = @"C:\Users\sgiraldo\OneDrive\Documentos\journal\todo.txt";
+                var pathTodo = Path.Combine(userPath,@"OneDrive\Documentos\journal\todo.txt") ;
                 var taskId = args[1] + ">";
                 var lines = File.ReadAllLines(pathTodo);
                 var newContent = new List<string>();
@@ -40,7 +41,7 @@ namespace journey
             }
 
             if (args[0] == "/my"){
-                var pathMyJournal = @"C:\Users\sgiraldo\OneDrive\Documentos\journal\{0}";
+                var pathMyJournal = Path.Combine(userPath,@"OneDrive\Documentos\journal\{0}");
                 pathMyJournal = pathMyJournal.Replace("{0}", DateTime.Now.ToString("dd.MM.yyyy") + ".txt");
                 
                 var myJournalEntry = DateTime.Now.ToString("yyyyMMdd HHmmss") + " " + body + Environment.NewLine;
@@ -56,7 +57,7 @@ namespace journey
 
             //get an app password from https://myaccount.google.com/apppasswords and store in a file elsewhere
             //last pass: Gmail apps Console apps
-            string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+ 
             string fromPassword = File.ReadAllText(Path.Combine(userPath, "gmail.key"));
 
             if (args.Length == 0){
