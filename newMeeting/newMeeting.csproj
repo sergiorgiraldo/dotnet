@@ -11,11 +11,11 @@
     <Authors>Sérgio Giraldo</Authors>
     <Company>sergiorgiraldo</Company>
     <Product>newMeeting</Product>
-    <AssemblyVersion>1.0.0.*</AssemblyVersion>
-    <FileVersion>1.0.0.*</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
     <NeutralLanguage>pt-br</NeutralLanguage>
     <Description>command line to generate meeting notes</Description>
-    <Copyright>Copyright sergiorgiraldo 2019</Copyright>
+    <Copyright>Copyright sergiorgiraldo (c) 2019</Copyright>
   </PropertyGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
 		<None Update="template.md" CopyToOutputDirectory="PreserveNewest" />

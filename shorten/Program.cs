@@ -26,13 +26,10 @@ namespace shorten
             //post to bitly
             var shortenedUrl = Shorten(args[0]).Replace("bit.ly", "s.giral.do");
 
-
-
             //insert into giral.do googl table
             using(MySql.Simple.Database db = connectionString){
                 var sqlStatement = string.Format("INSERT INTO googl (url, short, myName) VALUES ('{0}','{1}','')",args[0], shortenedUrl);
                 db.Execute(sqlStatement);
-
             }
 
             //output shortened url
