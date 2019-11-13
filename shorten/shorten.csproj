@@ -2,6 +2,15 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <Deterministic>False</Deterministic>
+    <Authors>Sérgio Giraldo</Authors>
+    <Company>sergiorgiraldo</Company>
+    <Copyright>(c) sergio giraldo - 2019</Copyright>
+    <Product>shorten</Product>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix>$([System.DateTime]::UtcNow.ToString(yyyyMMdd-HHmm))</VersionSuffix>
+
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
