@@ -42,7 +42,7 @@ namespace MyPinboard
             }
             //get your api token from https://pinboard.in/settings/password and store in a file elsewhere
             string userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string apiToken = File.ReadAllText(Path.Combine(userPath, "pinboard.key"));
+            var apiToken = File.ReadAllText(Path.Combine(userPath, "pinboard.key"));
 
             using (var pb = new PinboardAPI(apiToken))
             {
