@@ -7,9 +7,7 @@ using Microsoft.Extensions.Hosting;
 namespace PracticalAspNetCore 
 {
     public class User
-    {
-
-    }
+    {    }
 
     public class Startup
     {
