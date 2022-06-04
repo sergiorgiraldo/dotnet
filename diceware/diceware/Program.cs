@@ -164,7 +164,6 @@ namespace diceware
     //https://web.archive.org/web/20090304194122/http://msdn.microsoft.com:80/en-us/magazine/cc163367.aspx
     public static int GenerateRandom(Int32 minValue, Int32 maxValue)
         {
-            RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
             var byteArray = new byte[4];
 
             if (minValue > maxValue)
@@ -173,7 +172,7 @@ namespace diceware
             Int64 diff = maxValue - minValue;
             while (true)
             {
-                provider.GetBytes(byteArray);
+                RandomNumberGenerator.Create().GetBytes(byteArray);
                 UInt32 rand = BitConverter.ToUInt32(byteArray, 0);
 
                 Int64 max = (1 + (Int64)UInt32.MaxValue);
