@@ -15,7 +15,8 @@ namespace diceware
         private static bool _cleanWords = true;
         private static bool _appendDigit = false;
         private static bool _bare = false;
-        private static string _separator = " ";
+        private static string _separator = "rnd";
+        private static bool _multipleSeparators = true;
         private static string _ending = "";
         private static string _wordCase = "L";
         private static readonly List<string> Words = new List<string>();
@@ -46,6 +47,9 @@ namespace diceware
                     "s|sep|separator=", v => _separator = v
                 },
                 {
+                    "m|multipleSeparators=", v => _multipleSeparators = (v.ToUpperInvariant() == "Y")
+                },
+                {
                     "case=", v => _wordCase = v.ToUpperInvariant()
                 },
                 {
@@ -63,12 +67,6 @@ namespace diceware
                     Words.Add(tokens[1]);
                     line = sr.ReadLine();
                 }
-            }
-
-            if (_separator.ToLowerInvariant() == "rnd")
-            {
-                var index = GenerateRandom(0, 23);
-                _separator = _symbols[index].ToString();
             }
             if (_ending.ToLowerInvariant() == "rnd")
             {
@@ -104,12 +102,13 @@ namespace diceware
                             word = word.ToLowerInvariant();
                             break;
                     }
-                    password += (j > 0 ? _separator : "") + word;
+                    password += (j > 0 ? GetSeparator() : "") + word;
                 }
                 if (_appendDigit)
                 {
                     var digit = GenerateRandom(1, 99);
-                    password += _separator + digit;
+                    password += GetSeparator() + digit;
+                    
                 }
                 password += _ending;
                 Output(password);
@@ -140,6 +139,35 @@ namespace diceware
                     nChoice -= 1;
                     TextCopy.Clipboard.SetText(passwordChoices[nChoice]);
                     Output("Option " + choice + " copied to clipboard.");
+                }
+            }
+        }
+
+        private static string GetSeparator()
+        {
+            var index = GenerateRandom(0, 23);
+            if (_separator =="")
+            {
+                return "";
+            }
+            else{ 
+                if (_separator.ToLowerInvariant() == "rnd" )
+                {
+                    if (_multipleSeparators)
+                    {
+                        return _symbols[index].ToString();
+                    }
+                    else
+                    {
+                        if (_separator.ToLowerInvariant() == "rnd")
+                        {
+                            _separator = _symbols[index].ToString();;
+                        }
+                        return _separator;
+                    }
+                }
+                else{
+                    return _separator;
                 }
             }
         }
@@ -225,7 +253,8 @@ namespace diceware
             Output("\t/(c|clean|accents)={Y|N}: Remove accents. default: Yes");
             Output("\t/case={U|L|T}: Uppercase, Lowercase, Titlecase each word. default: L (lowercase)");
             Output("\t/(e|endwith)={character}: ending character. you must enclose in quotes. if you provide 'rnd', a random symbol will be chosen. default: ' '");
-            Output("\t/(s|sep|separator)={character}: separator. you must enclose in quotes. if you provide 'rnd', a random symbol will be chosen. default: ' '");
+            Output("\t/(s|sep|separator)={character}: separator. you must enclose in quotes. if you provide 'rnd', a random symbol will be chosen. default: 'rnd'");
+            Output("\t/(m|multipleSeparators)={Y|N}: Put different separators. Only works with separator is RND. default: Yes");
             Output("\t/(d|digit): Append a random number between 1 and 99. default: No");
             Console.ForegroundColor = currentColor;
             Environment.Exit(0);
