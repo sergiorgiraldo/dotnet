@@ -49,11 +49,15 @@ namespace MySpotify
             }
             else
             {
-                if (parameters[0] == "/h")
+                if (parameters[1] == "/h") //calling with dotnet run it is parameters[1], directly calling it is parameters[0]
                 {
                     Help();
                 }
-                else if (parameters[0] == "/d")
+                else if (parameters[1] == "/l")
+                {
+                    ShowUser();
+                }
+                else if (parameters[1] == "/d")
                 {
                     DeletePlaylist();
                 }
@@ -61,6 +65,15 @@ namespace MySpotify
                 {
                     CreatePlaylist();
                 }
+            }
+        }
+
+        private static void ShowUser()
+        {
+            var p =_spotify.GetUserPlaylists(_user.Id);
+            foreach(var i in p.Items)
+            {
+                Console.WriteLine(i.Name);
             }
         }
 
