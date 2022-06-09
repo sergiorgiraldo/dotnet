@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Auth;
@@ -12,6 +13,7 @@ namespace MySpotify
         private static SpotifyWebAPI _spotify;
         private static PublicProfile _user;
         private static string[] parameters;
+        private static List<SimplePlaylist> myPlaylists = new List<SimplePlaylist>();
 
         static void Main(string[] args)
         {
@@ -55,7 +57,12 @@ namespace MySpotify
                 }
                 else if (parameters[1] == "/l")
                 {
-                    ShowUser();
+                    ListPlaylists(50000, 0);
+                }
+                else if (parameters[1] == "/f")
+                {
+                    ListPlaylists(50000, 0, true);
+                    FindInPlaylists(parameters[2]);
                 }
                 else if (parameters[1] == "/d")
                 {
@@ -68,13 +75,55 @@ namespace MySpotify
             }
         }
 
-        private static void ShowUser()
+        private static bool foundInPlaylist = false;
+        private static void FindInPlaylists(string what)
         {
-            var p =_spotify.GetUserPlaylists(_user.Id);
-            foreach(var i in p.Items)
+            foreach (SimplePlaylist playlist in myPlaylists)
             {
-                Console.WriteLine(i.Name);
+                foundInPlaylist = false;
+                FindInPlaylist(what, 500000, 0, playlist);
             }
+            Console.WriteLine("*****END******");
+        }
+
+        private static void FindInPlaylist(string what, int total_, int offset, SimplePlaylist playlist)
+        {
+            if (total_ <= offset || foundInPlaylist) return;
+
+            var t =_spotify.GetPlaylistTracks(playlist.Id, "", 50, offset, "");
+            var total = t.Total;
+            foreach(var track in t.Items)
+            {
+                if (track.Track.Album.ToString().ToLower().Contains(what.ToLower()) ||
+                track.Track.Artists.Find(a => a.Name.ToLower().Contains(what.ToLower())) != null ||
+                track.Track.Name.ToString().ToLower().Contains(what.ToLower())) 
+                {
+                    foundInPlaylist = true;
+                    Console.WriteLine("\tFound in playlist " + playlist.Name + ": " + what);
+                    break;
+                } 
+            }
+            FindInPlaylist(what, total, offset + 50, playlist);
+        }
+
+        private static void ListPlaylists(int total_, int offset, bool retrieveIds = false)
+        {
+            if (total_ <= offset) return;
+
+            var playlists =_spotify.GetUserPlaylists(_user.Id, 50, offset);
+            var total = playlists.Total;
+
+            foreach(var playlist in playlists.Items)
+            {
+                if (retrieveIds){
+                    myPlaylists.Add(playlist);
+                }
+                else 
+                { 
+                    Console.WriteLine(playlist.Name);
+                }
+            }
+            ListPlaylists(total, offset + 50, retrieveIds);
         }
 
         private static void DeletePlaylist()
