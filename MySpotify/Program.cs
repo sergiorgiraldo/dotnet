@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Auth;
 using SpotifyAPI.Web.Enums;
@@ -86,7 +87,7 @@ namespace MySpotify
             Console.WriteLine("*****END******");
         }
 
-        private static void FindInPlaylist(string what, int total_, int offset, SimplePlaylist playlist)
+        private static async void FindInPlaylist(string what, int total_, int offset, SimplePlaylist playlist)
         {
             if (total_ <= offset || foundInPlaylist) return;
 
@@ -99,11 +100,33 @@ namespace MySpotify
                 track.Track.Name.ToString().ToLower().Contains(what.ToLower())) 
                 {
                     foundInPlaylist = true;
-                    Console.WriteLine("\tFound in playlist " + playlist.Name + ": " + what);
+                    Task<FullTrack> fullTrackTask = GetTrack(track.Track.Id, playlist.Name);
+                    FullTrack fullTrack = await fullTrackTask;
+                    Console.WriteLine("On " + playlist.Name + ":: song '" 
+                                + fullTrack.Name + "' from album '" 
+                                + fullTrack.Album.Name 
+                                + "' (" + GetArtists(fullTrack.Artists) + ")");
                     break;
                 } 
             }
             FindInPlaylist(what, total, offset + 50, playlist);
+        }
+
+        private static string GetArtists(List<SimpleArtist> artists)
+        {
+            string result = "";
+            foreach (SimpleArtist artist in artists)
+            {
+                result += artist.Name + ", ";
+            }
+            return result.Substring(0, result.Length - 2);
+        }
+
+        private static async Task<FullTrack> GetTrack(string id, string playlistName)
+        {
+            await Task.Delay(3000);
+            var fullTrack = _spotify.GetTrack(id);
+            return fullTrack;   
         }
 
         private static void ListPlaylists(int total_, int offset, bool retrieveIds = false)
