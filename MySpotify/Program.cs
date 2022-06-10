@@ -26,7 +26,7 @@ namespace MySpotify
                 "http://localhost:4002",
                 Scope.UserReadPrivate | Scope.PlaylistModifyPublic | Scope.PlaylistModifyPrivate
             );
-            auth.AuthReceived += async (sender, payload) =>
+            auth.AuthReceived += (sender, payload) =>
             {
                 Console.Clear();
                 auth.Stop(); 
@@ -52,7 +52,7 @@ namespace MySpotify
             }
             else
             {
-                if (parameters[1] == "/h") //calling with dotnet run it is parameters[1], directly calling it is parameters[0]
+                if (parameters[1] == "/h") //calling with dotnet run it is parameters[1], directly calling or debugging it is parameters[0]
                 {
                     Help();
                 }
@@ -84,7 +84,6 @@ namespace MySpotify
                 foundInPlaylist = false;
                 FindInPlaylist(what, 500000, 0, playlist);
             }
-            Console.WriteLine("*****END******");
         }
 
         private static async void FindInPlaylist(string what, int total_, int offset, SimplePlaylist playlist)
@@ -93,22 +92,30 @@ namespace MySpotify
 
             var t =_spotify.GetPlaylistTracks(playlist.Id, "", 50, offset, "");
             var total = t.Total;
-            foreach(var track in t.Items)
-            {
-                if (track.Track.Album.ToString().ToLower().Contains(what.ToLower()) ||
-                track.Track.Artists.Find(a => a.Name.ToLower().Contains(what.ToLower())) != null ||
-                track.Track.Name.ToString().ToLower().Contains(what.ToLower())) 
-                {
-                    foundInPlaylist = true;
-                    Task<FullTrack> fullTrackTask = GetTrack(track.Track.Id, playlist.Name);
-                    FullTrack fullTrack = await fullTrackTask;
-                    Console.WriteLine("On " + playlist.Name + ":: song '" 
-                                + fullTrack.Name + "' from album '" 
-                                + fullTrack.Album.Name 
-                                + "' (" + GetArtists(fullTrack.Artists) + ")");
-                    break;
-                } 
-            }
+            try{
+                if (t.Items != null)
+                    foreach(var track in t.Items)
+                    {
+                        if (track.Track.Album.ToString().ToLower().Contains(what.ToLower()) ||
+                        track.Track.Artists.Find(a => a.Name.ToLower().Contains(what.ToLower())) != null ||
+                        track.Track.Name.ToString().ToLower().Contains(what.ToLower())) 
+                        {
+                            foundInPlaylist = true;
+                            Task<FullTrack> fullTrackTask = GetTrack(track.Track.Id, playlist.Name);
+                            FullTrack fullTrack = await fullTrackTask;
+                            if (fullTrack != null)
+                                Console.WriteLine("On " + playlist.Name + ":: song '" 
+                                            + fullTrack.Name + "' from album '" 
+                                            + fullTrack.Album.Name 
+                                            + "' (" + GetArtists(fullTrack.Artists) + ")");
+                            break;
+                        } 
+                    }
+                }
+            catch (Exception e){
+                Console.WriteLine(e);
+                Console.WriteLine(e.StackTrace);
+            }  
             FindInPlaylist(what, total, offset + 50, playlist);
         }
 
