@@ -70,7 +70,7 @@ namespace diceware
             }
             if (_ending.ToLowerInvariant() == "rnd")
             {
-                var index = GenerateRandom(0, 23);
+                var index = GenerateRandom(0, 23); //23 letter in the alphabet
                 _ending = _symbols[index].ToString();
             }
 
@@ -81,7 +81,7 @@ namespace diceware
                 var password = "";
                 for (var j = 0; j < _numberOfWords; j++)
                 {
-                    var num = GenerateRandom(0, 7775);
+                    var num = GenerateRandom(0, 7775); //7775 words in my dictionary
                     if (Words[num].Length < _minLength)
                     {
                         j -= 1;
@@ -106,7 +106,7 @@ namespace diceware
                 }
                 if (_appendDigit)
                 {
-                    var digit = GenerateRandom(1, 99);
+                    var digit = GenerateRandom(1, 99);//numbers from 1 to 99
                     password += GetSeparator() + digit;
                     
                 }
