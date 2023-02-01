@@ -11,14 +11,14 @@ namespace diceware
     class Program
     {
         private static int _numberOfWords = 6;
-        private static int _minLength = 5;
+        private static int _minLength = 6;
         private static bool _cleanWords = true;
-        private static bool _appendDigit = false;
+        private static bool _appendDigit = true;
         private static bool _bare = false;
         private static string _separator = "rnd";
-        private static bool _multipleSeparators = true;
+        private static bool _multipleSeparators = false;
         private static string _ending = "";
-        private static string _wordCase = "L";
+        private static string _wordCase = "R";
         private static readonly List<string> Words = new List<string>();
         private static string _symbols = "!@#$%&*()_+=-[{]};:<>,.?";
 
@@ -79,6 +79,7 @@ namespace diceware
             for (var i = 0; i <= 2; i++)
             {
                 var password = "";
+                var randomWord = GenerateRandom(0, _numberOfWords);
                 for (var j = 0; j < _numberOfWords; j++)
                 {
                     var num = GenerateRandom(0, 7775); //7775 words in my dictionary
@@ -91,6 +92,14 @@ namespace diceware
                     var word = (_cleanWords ? RemoveDiacritics(Words[num], true) : Words[num]);
                     switch (_wordCase)
                     {
+                        case "R":
+                            if (j == randomWord){
+                                word = word.ToUpperInvariant();
+                            }
+                            else{
+                                word = word.ToLowerInvariant();
+                            }
+                            break;
                         case "U":
                             word = word.ToUpperInvariant();
                             break;
@@ -182,7 +191,7 @@ namespace diceware
             var options = "These are ";
             options += _numberOfWords + " words, with min length of " + _minLength;
             options += ", formatted as " +
-                       (_wordCase == "L" ? "lowercase" : (_wordCase == "T" ? "titlecase" : "uppercase"));
+                       (_wordCase == "L" ? "lowercase" : (_wordCase == "T" ? "titlecase" : (_wordCase == "R" ? "random uppercase" : "uppercase")));
             options += ", separated by \\ " + _separator + " \\, ";
             options += (_appendDigit ? "with" : "without") + " number in the end, ";
             options += "finished with \\ " + _ending + " \\";
